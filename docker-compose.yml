@@ -11,3 +11,5 @@ services:
     environment:
       - JENKINS_USER
       - JENKINS_PASS
+      - GITHUB_USER
+      - GITHUB_PASS

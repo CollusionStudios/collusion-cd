@@ -16,6 +16,16 @@ jenkins:
   authorizationStrategy:
     loggedInUsersCanDoAnything:
       allowAnonymousRead: false
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              scope:    SYSTEM
+              id:       github_collusion
+              description: github_collusion
+              username: ${GITHUB_USER}
+              password: ${GITHUB_PASS}
 security:
   remotingCLI:
     enabled: false
@@ -26,31 +36,8 @@ jobs:
                   cps {
                       sandbox()
                       script("""
-                        stage('Checkout') {
-                          git credentialsId: 'git-asos-pass', url: 'https://github.com/CollusionStudios/collusion-web-app'
-                        }
-                        stage('Environment') {
-                          sh 'git --version'
-                          echo "Branch: ${env.BRANCH_NAME}"
-                          sh 'printenv'
-                        }
-                        stage('Build Docker test') {
-                          sh 'docker build -t collusion-web-app-test -f Dockerfile.test --no-cache .'
-                        }
-                        stage('Run Docker test'){
-                          sh 'docker run --rm collusion-web-app-test'
-                        }
-                        stage('Clean Docker test'){
-                          sh 'docker rmi collusion-web-app-test'
-                        }
-                        stage('Azure Login') {
-                          azureCLI commands: [[exportVariablesString: '', script: 'az group create -n MyResourceGroup --location northeurope']], principalCredentialId: 'JenkinsPrincipal'
-                        }
-                        stage('Deploy'){
-                          sh 'docker build -t collusion-web-app -f Dockerfile.prod --no-cache .'
-                          sh 'docker tag collusion-web-app localhost:5000/collusion-web-app'
-                          sh 'docker push localhost:5000/collusion-web-app'
-                          sh 'docker rmi -f collusion-web-app localhost:5000/collusion-web-app'
+                        node('linux-x86_64') {
+                            sh "hostname"
                         }
                       """.stripIndent())
                   }
