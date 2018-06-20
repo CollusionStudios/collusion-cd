@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  master:
+    build: .
+    volumes:
+      - /var/jenkins_home
+    ports:
+      - "50000:50000"
+      - "8080:8080"
+    environment:
+      - JENKINS_USER
+      - JENKINS_PASS

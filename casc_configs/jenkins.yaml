@@ -1,0 +1,27 @@
+jenkins:
+  systemMessage: "Jenkins configured automatically\n\n"
+  noUsageStatistics: true
+  numExecutors: 5
+  scmCheckoutRetryCount: 2
+  mode: NORMAL
+  slaveAgentPort: 50000
+  agentProtocols:
+    - "jnlp4"
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+       - id: ${JENKINS_USER}
+         password: ${JENKINS_PASS}
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+security:
+  remotingCLI:
+    enabled: false
+
+# TODO: include this once supported
+# unclassified:
+#   simple-theme-plugin:
+#     cssUrl: "https://cdn.rawgit.com/afonsof/jenkins-material-theme/gh-pages/dist/material-blue-grey.css"
+#     faviconUrl: "https://collusion.com/favicon.ico"

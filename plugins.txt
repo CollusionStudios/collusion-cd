@@ -1,0 +1,2 @@
+configuration-as-code:0.8-alpha
+simple-theme-plugin:0.4
