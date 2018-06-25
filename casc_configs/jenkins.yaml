@@ -45,7 +45,16 @@ jobs:
                             sh 'printenv'
                           }
                           stage('Test') {
-                            sh 'docker info'
+                            sh 'docker build -t collusion-web-app-test -f Dockerfile.test --no-cache .'
+                            sh 'docker run --rm collusion-web-app-test'
+                            sh 'docker rmi collusion-web-app-test'
+                          }
+                          stage('Build') {
+                            sh 'docker login \${COLLUSION_REGISTRY_URL} -u \${COLLUSION_REGISTRY_USERNAME} -p \${COLLUSION_REGISTRY_PASS}'
+                            sh 'docker build -t collusion-web-app -f Dockerfile.prod --no-cache .'
+                            sh 'docker tag collusion-web-app \${COLLUSION_REGISTRY_URL}/collusion-web-app:dev'
+                            sh 'docker push \${COLLUSION_REGISTRY_URL}/collusion-web-app'
+                            sh 'docker rmi -f \${COLLUSION_REGISTRY_URL}/collusion-web-app:dev'
                           }
                         }
                       """.stripIndent())
