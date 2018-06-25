@@ -1,6 +1,8 @@
 FROM openjdk:8-jdk-alpine
 
-RUN apk add --no-cache git openssh-client curl unzip bash ttf-dejavu coreutils tini
+USER root
+
+RUN apk update && apk add --no-cache git openssh-client curl unzip bash ttf-dejavu coreutils tini docker shadow
 
 ARG user=jenkins
 ARG group=jenkins
@@ -35,6 +37,10 @@ RUN mkdir -p $JENKINS_HOME \
     && chown ${uid}:${gid} $JENKINS_HOME \
     && addgroup -g ${gid} ${group} \
     && adduser -h "$JENKINS_HOME" -u ${uid} -G ${group} -s /bin/bash -D ${user}
+
+# Add jenkins user to the root group
+# TODO: remove jenkins from root group but make it able to run docker commands
+RUN usermod -aG root ${user}
 
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades

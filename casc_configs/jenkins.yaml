@@ -36,8 +36,17 @@ jobs:
                   cps {
                       sandbox()
                       script("""
-                        node('linux-x86_64') {
-                            sh "hostname"
+                        node {
+                          stage('Checkout') {
+                            git credentialsId: 'github_collusion', url: 'https://github.com/CollusionStudios/collusion-web-app'
+                          }
+                          stage('Environment') {
+                            sh 'git --version'
+                            sh 'printenv'
+                          }
+                          stage('Test') {
+                            sh 'docker info'
+                          }
                         }
                       """.stripIndent())
                   }

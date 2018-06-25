@@ -22,7 +22,7 @@ CI/CD process using Jenkins and Docker
       JENKINS_USER=...
     ```
 
-    Find the values from Azure
+    Feel in the values with something
 
 
 ## Configuration As Code
