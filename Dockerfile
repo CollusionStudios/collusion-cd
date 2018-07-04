@@ -2,11 +2,7 @@ FROM openjdk:8-jdk-alpine
 
 USER root
 
-RUN cat /etc/apk/repositories
-RUN apk update && apk add --no-cache git openssh-client curl unzip bash ttf-dejavu coreutils tini docker=17.12.1-r0 shadow openrc sudo
-
-RUN rc-update add docker boot
-# RUN service docker start
+RUN apk update && apk add --no-cache git openssh-client curl unzip bash ttf-dejavu coreutils tini shadow openrc sudo docker
 
 ARG user=jenkins
 ARG group=jenkins
@@ -43,10 +39,8 @@ RUN mkdir -p $JENKINS_HOME \
     && adduser -h "$JENKINS_HOME" -u ${uid} -G ${group} -s /bin/bash -D ${user}
 
 # Add jenkins user to the root group
-# TODO: remove jenkins from root group but make it able to run docker commands
-RUN groupmod -g 101 docker
 RUN usermod -aG root ${user}
-RUN usermod -aG docker ${user}
+
  ## allowing jenkins user to run sudo commands
 RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -96,5 +90,4 @@ COPY plugins.txt /tmp/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /tmp/plugins.txt
 
 # Tini as the entry point to manage zombie processes
-# ENTRYPOINT ["docker.sh"]
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]

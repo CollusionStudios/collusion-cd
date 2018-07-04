@@ -14,19 +14,10 @@ CI/CD process using Jenkins and Docker
 
     $ docker-compose -p jenkins down --rmi all
 
-#### Don't forget the .env file
-
-    with the following values
-    ```
-      JENKINS_PASS=...
-      JENKINS_USER=...
-    ```
-
-    Feel in the values with something
-
-
 ## Configuration As Code
 
-Jenkins' configuration is being configurated by the `jenkins.yaml` file under `casc_configs` folder.
+Jenkins' configuration is being configured by the `jenkins.yaml` file under `casc_configs` folder.
 
 Find all the available options under `http://localhost:8080/configuration-as-code/reference`.
+
+*Our Dockefile is based on https://github.com/jenkinsci/docker/blob/master/Dockerfile-alpine*

@@ -2,3 +2,4 @@ configuration-as-code:0.8-alpha
 simple-theme-plugin:0.4
 workflow-aggregator:2.5
 github-oauth:0.29
+docker-plugin:1.1.4
