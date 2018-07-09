@@ -1,15 +1,25 @@
-version: '3'
+version: '3.3'
 
 services:
   master:
     build: .
+    restart: always
+    privileged: true
     volumes:
       - /var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/bin/docker
     ports:
       - "50000:50000"
       - "8080:8080"
+      - "2375:2375"
     environment:
       - JENKINS_USER
       - JENKINS_PASS
       - GITHUB_USER
       - GITHUB_PASS
+      - COLLUSION_REGISTRY_URL
+      - COLLUSION_REGISTRY_USERNAME
+      - COLLUSION_REGISTRY_PASS
+      - SAUCE_ACCESS_KEY
+      - SAUCE_USERNAME
